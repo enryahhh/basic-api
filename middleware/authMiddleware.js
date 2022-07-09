@@ -53,12 +53,11 @@ function authorize(roles = []) {
           error.statusCode = 401;
           throw error;
         }
-        console.log(decodedToken.role)
         if (roles.length && !roles.includes(decodedToken.role)) {
                 // user's role is not authorized
                 return res.status(401).json({ message: 'Unauthorized' });
             }
-        req.userId = decodedToken.userId;
+        req.user_id = decodedToken.user_id;
         next();
       };
 
