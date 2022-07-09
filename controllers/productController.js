@@ -8,18 +8,18 @@ const getProducts = async (req,res,next) => {
 	});
 }
 
-
 const storeProduct = async (req,res,next)=>{
 	// console.log(req.user);
 	let scode = 0;
 	let message;
+	console.log(isNaN(req.body.stok))
 	try{
 		let _name = req.body.name;
 		let _img = req.body.img;
 		let _price = req.body.price;
 		let _stok = req.body.stok;
 		let _description = req.body.description;
-		if(!(isNaN(_price) && isNaN(_stok))){
+		if((isNaN(_price) || isNaN(_stok))){
 			return res.json({
 				'message' : 'tolong masukan angka'
 			})
