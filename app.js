@@ -8,7 +8,11 @@ const sequelize = require('./util/db')
 const app = express();
 const routeAdmin = require('./routes/admin')
 const routeUser = require('./routes/user')
+const authController = require('./controllers/authController');
+const authMiddleware = require('./middleware/authMiddleware')
+
 const User = require('./models/user')
+
 const bodyParser = require('body-parser')
 
 dotenv.config();
@@ -27,18 +31,20 @@ app.use((req, res, next) => {
 
 
 app.use(bodyParser.urlencoded({extended:false}));
-app.use((req,res,next)=>{
-    User.findByPk(1)
-    .then(user=>{
-        req.user = user
-        console.log(user.id);
-        next();
-    })
-    .catch(err=>console.log(err));
-})
+// app.use((req,res,next)=>{
+//     User.findByPk(1)
+//     .then(user=>{
+//         req.user = user
+//         console.log(user.id);
+//         next();
+//     })
+//     .catch(err=>console.log(err));
+// })
 // initialize routes
-app.use('/admin',routeAdmin)
-app.use('/',routeUser);
+app.use('/api/login',authController.login);
+app.use('/api/register',authController.register);
+app.use('/api/user',authMiddleware.authorize(),routeUser);
+app.use('/api/admin',authMiddleware.authorize("admin"),routeAdmin)
 
 // create connection to server
 const server = http.createServer(app);

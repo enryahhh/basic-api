@@ -22,6 +22,10 @@ User.init({
 		type: DataTypes.STRING,
 		allowNull:false,
 	},
+	role:{
+		type: DataTypes.STRING,
+		allowNull:false,
+	}
 	// token:{
 	// 	type: DataTypes.STRING,
 	// 	allowNull:false,
